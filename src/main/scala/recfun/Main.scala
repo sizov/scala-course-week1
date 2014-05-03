@@ -1,7 +1,5 @@
 package recfun
 
-import scala.collection.mutable.ArrayBuffer
-
 object Main {
 
   def main(args: Array[String]) {
@@ -19,29 +17,29 @@ object Main {
    */
   def pascal(c: Int, r: Int): Int = {
 
-    def getPascalRow(index: Int): scala.collection.mutable.ArrayBuffer[Int] = {
+    def getPascalRow(index: Int): Array[Int] = {
 
-      def retrieveRowElementByIndex(buffer: ArrayBuffer[Int], i: Int) = {
+      def retrieveRowElementByIndex(buffer: Array[Int], i: Int) = {
         if (i < 0 || i >= buffer.length)
           0
         else
           buffer(i)
       }
 
-      def calculateRowElement(index: Int, previousRow: ArrayBuffer[Int]): Int = {
+      def calculateRowElement(index: Int, previousRow: Array[Int]): Int = {
         retrieveRowElementByIndex(previousRow, index - 1) +
           retrieveRowElementByIndex(previousRow, index)
       }
 
       if (index == 0) {
-        ArrayBuffer(1)
+        Array(1)
       }
       else {
-        val currentRow: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
+        val currentRow: Array[Int] = Array.ofDim[Int](index + 1)
         val previousRow = getPascalRow(index - 1)
 
         for (i <- 0 to previousRow.length) {
-          currentRow += calculateRowElement(i, previousRow)
+          currentRow(i) = calculateRowElement(i, previousRow)
         }
 
         currentRow
