@@ -77,25 +77,6 @@ object Main {
     balanceIter(chars, 0, 0)
   }
 
-  //  def balance(chars: List[Char]): Boolean = {
-  //    val openSymbol = '('
-  //    val closeSymbol = ')'
-  //
-  //    var openedCount = 0
-  //    var closedCount = 0
-  //
-  //    for (i <- 0 to chars.length - 1) {
-  //      if (chars(i) == openSymbol)
-  //        openedCount = openedCount + 1
-  //      else if (chars(i) == closeSymbol)
-  //        closedCount = closedCount + 1
-  //      if (openedCount < closedCount)
-  //        return false
-  //    }
-  //
-  //    true
-  //  }
-
   /**
    * Exercise 3
    */
