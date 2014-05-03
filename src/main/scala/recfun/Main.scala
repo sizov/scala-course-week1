@@ -13,35 +13,35 @@ object Main {
     }
   }
 
+
   /**
    * Exercise 1
    */
   def pascal(c: Int, r: Int): Int = {
+
     def getPascalRow(index: Int): scala.collection.mutable.ArrayBuffer[Int] = {
+
+      def retrieveRowElementByIndex(buffer: ArrayBuffer[Int], i: Int) = {
+        if (i < 0 || i >= buffer.length)
+          0
+        else
+          buffer(i)
+      }
+
+      def calculateRowElement(index: Int, previousRow: ArrayBuffer[Int]): Int = {
+        retrieveRowElementByIndex(previousRow, index - 1) +
+          retrieveRowElementByIndex(previousRow, index)
+      }
+
       if (index == 0) {
         ArrayBuffer(1)
       }
       else {
         val currentRow: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer()
         val previousRow = getPascalRow(index - 1)
-        val previousRowLength = previousRow.length
 
-        for (i <- 0 to previousRowLength) {
-          val topLeftIndex = i - 1
-          val topRightIndex = i
-
-          var topLeftValue: Int = 0
-          var topRightValue: Int = 0
-
-          if (topLeftIndex >= 0) {
-            topLeftValue = previousRow(topLeftIndex)
-          }
-
-          if (topRightIndex < previousRowLength) {
-            topRightValue = previousRow(topRightIndex)
-          }
-
-          currentRow += topLeftValue + topRightValue
+        for (i <- 0 to previousRow.length) {
+          currentRow += calculateRowElement(i, previousRow)
         }
 
         currentRow
