@@ -1,4 +1,4 @@
 scala-course
 ============
 
-Practice for scala cource
+Practice for scala course
