@@ -16,37 +16,49 @@ object Main {
    * Exercise 1
    */
   def pascal(c: Int, r: Int): Int = {
-
-    def getPascalRow(index: Int): Array[Int] = {
-
-      def retrieveRowElementByIndex(buffer: Array[Int], i: Int) = {
-        if (i < 0 || i >= buffer.length)
-          0
-        else
-          buffer(i)
-      }
-
-      def calculateRowElement(index: Int, previousRow: Array[Int]): Int = {
-        retrieveRowElementByIndex(previousRow, index - 1) +
-          retrieveRowElementByIndex(previousRow, index)
-      }
-
-      if (index == 0) {
-        Array(1)
-      }
-      else {
-        val currentRow: Array[Int] = Array.ofDim[Int](index + 1)
-        val previousRow = getPascalRow(index - 1)
-
-        for (i <- 0 to previousRow.length) {
-          currentRow(i) = calculateRowElement(i, previousRow)
-        }
-
-        currentRow
-      }
-    }
-
     getPascalRow(r)(c)
+  }
+
+  /**
+   *
+   * @param index
+   * @return
+   */
+  def getPascalRow(index: Int): Array[Int] = {
+    if (index == 0)
+      Array(1)
+    else {
+      val currentRow: Array[Int] = Array.ofDim[Int](index + 1)
+      val previousRow = getPascalRow(index - 1)
+      for (i <- 0 to previousRow.length) {
+        currentRow(i) = calculateRowElement(i, previousRow)
+      }
+
+      currentRow
+    }
+  }
+
+  /**
+   *
+   * @param index
+   * @param previousRow
+   * @return
+   */
+  def calculateRowElement(index: Int, previousRow: Array[Int]): Int = {
+    retrieveRowElementByIndex(previousRow, index - 1) + retrieveRowElementByIndex(previousRow, index)
+  }
+
+  /**
+   *
+   * @param buffer
+   * @param i
+   * @return
+   */
+  def retrieveRowElementByIndex(buffer: Array[Int], i: Int) = {
+    if (i < 0 || i >= buffer.length)
+      0
+    else
+      buffer(i)
   }
 
 
@@ -76,9 +88,51 @@ object Main {
   }
 
   /**
+   * ======================================================
    * Exercise 3
+   * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    1
+    amountUsingSingleCoins(money, coins)
+  }
+
+  def amountUsingSingleCoins(money: Int, coins: List[Int]): Int = {
+    if (coins.isEmpty)
+      0
+    else if (canBeDoneWithSoloCoin(money, coins.head))
+      1 + amountUsingSingleCoins(money, coins.tail)
+    else
+      amountUsingSingleCoins(money, coins.tail)
+    //
+    //      var amount = 0
+    //
+    //      for (i <- 0 to coins.length - 1) {
+    //        val coin = coins(i)
+    //        if (canBeDoneWithSoloCoin(money, coin))
+    //          amount = amount + 1
+    //      }
+    //
+    //      amount
+  }
+
+  //  def amountUsingSingleCoin(money: Int, coins: List[Int]): Int = {
+  //    var amount = 0
+  //
+  //    for (i <- 0 to coins.length - 1) {
+  //      val coin = coins(i)
+  //      if (canBeDoneWithSoloCoin(money, coin))
+  //        amount = amount + 1
+  //    }
+  //
+  //    amount
+  //  }
+  //
+  //
+  def canBeDoneWithSoloCoin(money: Int, coin: Int): Boolean = {
+    var sum = 0
+    while (sum < money) {
+      sum = sum + coin
+    }
+    sum == money
   }
 }
