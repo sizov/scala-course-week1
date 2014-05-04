@@ -82,43 +82,55 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    val combinations = new ArrayBuffer[ArrayBuffer[Int]]()
+    val combinations = new ArrayBuffer[Vector[Int]]()
 
 
+    def iter(amountToFill: Int, currentlyUseCombination: Vector[Int], coinsSet: List[Int]) : Boolean = {
+      println(s"$amountToFill [$coinsSet]")
 
-    def iter(amountToFill: Int, currentlyUseCombination: ArrayBuffer[Int], coinsSet: List[Int]) = {
+      if (amountToFill == 0)
+        false
 
-      val head = coinsSet.head
-
-      val filler = head * X
-
-      val dif = amountToFill - filler
-
-      if (dif > 0) {
-
-      }
-
-      else if (dif == 0) {
-        currentlyUseCombination += X
-        combinations += currentlyUseCombination
-      }
+      else if(coinsSet.isEmpty)
+        false
 
       else {
-        iter(amountToFill, coinsSet.tail)
+
+        val dif = amountToFill - coinsSet.head
+
+        if (dif > 0) {
+          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
+
+          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet)
+        }
+
+        else if (dif == 0) {
+//          println(s"===> ${currentlyUseCombination :+ coinsSet.head}")
+          combinations += currentlyUseCombination :+ coinsSet.head
+
+          println(s"found a good combination ${currentlyUseCombination :+ coinsSet.head} with head coin ${coinsSet.head},\n" +
+            s"now will search to express $amountToFill with smaller set ${coinsSet.tail}")
+
+          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
+
+          true
+        }
+
+        //currently added coin too big to fill amount
+        else {
+          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
+        }
+
       }
 
 
     }
 
-
-
-    iter(money, new ArrayBuffer[Int], coins)
+    iter(money, Vector[Int](), coins)
 
     println(combinations)
 
     combinations.length
-
-    1
   }
 
   def countSingleCoinInAmount(targetAmount: Int, currentAmount: Int, coin: Int): Int = {

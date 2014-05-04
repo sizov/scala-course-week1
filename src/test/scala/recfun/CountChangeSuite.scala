@@ -26,6 +26,10 @@ class CountChangeSuite extends FunSuite {
       assert(countChange(10, List(6, 4, 2)) === 5)
     }
 
+//    test("recur 5") {
+//      assert(countChange(14, List(6, 4, 2)) === 8)
+//    }
+
 
 
 
