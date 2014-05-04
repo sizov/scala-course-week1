@@ -81,15 +81,28 @@ object Main {
    */
   def countChange(money: Int, coins: List[Int]): Int = {
 
-    fillAmountIter(money, coins)
+    fillAmountIter(money, coins, "")
 
   }
 
 
-  //amount = 2, coinsSet = [1,2]
-  def fillAmountIter(amount: Int, coinsSet: List[Int]): Int = {
+  //amount = 10, coinsSet = [6,4,2]
 
-    println(s"filling $amount with $coinsSet")
+  //[6,4,2]
+  //    6 6
+  //6 4
+  //6 2 2
+
+  //[4,2]
+  //    4 4 4
+  //4 4 2
+  //4 2 2 2
+
+  //[2]
+  //2 2 2 2 2
+  def fillAmountIter(amount: Int, coinsSet: List[Int], combination: String): Int = {
+
+    println(s"  filling   $amount   with  $coinsSet")
 
     if (coinsSet.isEmpty)
       0
@@ -98,72 +111,19 @@ object Main {
       0
 
     else if (amount < coinsSet.head) {
-//      println(s"Can\'t fill $amount with head ${coinsSet.head}. Will try with ${coinsSet.tail}")
-      fillAmountIter(amount, coinsSet.tail)
+      fillAmountIter(amount, coinsSet.tail, combination)
     }
 
     else if (amount > coinsSet.head) {
-//      println(s"Can fill $amount with head (${coinsSet.head}), more remains. Will try filling smaller amount (${amount - coinsSet.head})")
-      //      1 + fillAmountIter(amount - coinsSet.head, coinsSet)
-      fillAmountIter(amount - coinsSet.head, coinsSet)
+      fillAmountIter(amount - coinsSet.head, coinsSet, s"${combination + coinsSet.head} ")
     }
 
     else {
-//      println(s"Can EXACTLY fill $amount with head (${coinsSet.head}), NO more amount to fill remains")
-
+      println(s"FINISHED, using: ${combination + coinsSet.head}")
       //FIXME: need to reset amount now
-      1 + fillAmountIter(amount, coinsSet.tail)
+//      1 + fillAmountIter(amount, coinsSet.tail, combination)
+      1 + fillAmountIter(amount + coinsSet.head, coinsSet.tail, combination)
     }
-
-
-    //      lessAmountToFillSameCoins + sameAmountToFillLessCoins
-
-
-    //    def func() {
-    //      if (x)
-    //        0
-    //      else if (y)
-    //        func(A) + func(B)
-    //      else
-    //        func(c)
-    //    }
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    if (coinsSet.isEmpty)
-    //      0
-    //    else if (canBeDoneWithSoloCoin(amountToFill, coinsSet.head))
-    //      1 + amountUsingSingleCoins(amountToFill, coinsSet.tail)
-    //    else
-    //    val
-    //    amountUsingCoinsIter (amountToFill -, coinsSet.tail)
   }
-
-
-  //  def amountUsingSingleCoins(money: Int, coins: List[Int]): Int = {
-  //    if (coins.isEmpty)
-  //      0
-  //    else if (canBeDoneWithSoloCoin(money, coins.head))
-  //      1 + amountUsingSingleCoins(money, coins.tail)
-  //    else
-  //      amountUsingSingleCoins(money, coins.tail)
-  //  }
-  //
-  //  def canBeDoneWithSoloCoin(money: Int, coin: Int): Boolean = {
-  //    closestToTarget(money, 0, coin) == money
-  //  }
-  //
-  //  def closestToTarget(target: Int, current: Int, increm: Int): Int = {
-  //    if (current >= target)
-  //      current
-  //    else
-  //      closestToTarget(target, current + increm, increm)
-  //  }
 
 }
