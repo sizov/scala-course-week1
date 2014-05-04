@@ -1,5 +1,7 @@
 package recfun
 
+import scala.collection.mutable.ArrayBuffer
+
 object Main {
 
   def main(args: Array[String]) {
@@ -80,50 +82,53 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
+    val combinations = new ArrayBuffer[ArrayBuffer[Int]]()
 
-    fillAmountIter(money, coins, "")
 
+
+    def iter(amountToFill: Int, currentlyUseCombination: ArrayBuffer[Int], coinsSet: List[Int]) = {
+
+      val head = coinsSet.head
+
+      val filler = head * X
+
+      val dif = amountToFill - filler
+
+      if (dif > 0) {
+
+      }
+
+      else if (dif == 0) {
+        currentlyUseCombination += X
+        combinations += currentlyUseCombination
+      }
+
+      else {
+        iter(amountToFill, coinsSet.tail)
+      }
+
+
+    }
+
+
+
+    iter(money, new ArrayBuffer[Int], coins)
+
+    println(combinations)
+
+    combinations.length
+
+    1
   }
 
-
-  //amount = 10, coinsSet = [6,4,2]
-
-  //[6,4,2]
-  //    6 6
-  //6 4
-  //6 2 2
-
-  //[4,2]
-  //    4 4 4
-  //4 4 2
-  //4 2 2 2
-
-  //[2]
-  //2 2 2 2 2
-  def fillAmountIter(amount: Int, coinsSet: List[Int], combination: String): Int = {
-
-    println(s"  filling   $amount   with  $coinsSet")
-
-    if (coinsSet.isEmpty)
+  def countSingleCoinInAmount(targetAmount: Int, currentAmount: Int, coin: Int): Int = {
+    if (currentAmount == targetAmount)
+      targetAmount / coin
+    else if (currentAmount < targetAmount)
+      countSingleCoinInAmount(targetAmount, currentAmount + coin, coin)
+    else
       0
-
-    else if (amount == 0)
-      0
-
-    else if (amount < coinsSet.head) {
-      fillAmountIter(amount, coinsSet.tail, combination)
-    }
-
-    else if (amount > coinsSet.head) {
-      fillAmountIter(amount - coinsSet.head, coinsSet, s"${combination + coinsSet.head} ")
-    }
-
-    else {
-      println(s"FINISHED, using: ${combination + coinsSet.head}")
-      //FIXME: need to reset amount now
-//      1 + fillAmountIter(amount, coinsSet.tail, combination)
-      1 + fillAmountIter(amount + coinsSet.head, coinsSet.tail, combination)
-    }
   }
+
 
 }

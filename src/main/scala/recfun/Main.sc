@@ -1,2 +1,4 @@
-val currentRow: Array[Int] = Array.ofDim(5)
-currentRow(0) = 123
+import scala.collection.mutable.ArrayBuffer
+
+val x = new ArrayBuffer[Int]
+x.isEmpty
