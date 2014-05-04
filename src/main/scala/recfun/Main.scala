@@ -103,36 +103,17 @@ object Main {
       1 + amountUsingSingleCoins(money, coins.tail)
     else
       amountUsingSingleCoins(money, coins.tail)
-    //
-    //      var amount = 0
-    //
-    //      for (i <- 0 to coins.length - 1) {
-    //        val coin = coins(i)
-    //        if (canBeDoneWithSoloCoin(money, coin))
-    //          amount = amount + 1
-    //      }
-    //
-    //      amount
   }
 
-  //  def amountUsingSingleCoin(money: Int, coins: List[Int]): Int = {
-  //    var amount = 0
-  //
-  //    for (i <- 0 to coins.length - 1) {
-  //      val coin = coins(i)
-  //      if (canBeDoneWithSoloCoin(money, coin))
-  //        amount = amount + 1
-  //    }
-  //
-  //    amount
-  //  }
-  //
-  //
   def canBeDoneWithSoloCoin(money: Int, coin: Int): Boolean = {
-    var sum = 0
-    while (sum < money) {
-      sum = sum + coin
-    }
-    sum == money
+    closestToTarget(money, 0, coin) == money
   }
+
+  def closestToTarget(target: Int, current: Int, increm: Int): Int = {
+    if (current >= target)
+      current
+    else
+      closestToTarget(target, current + increm, increm)
+  }
+
 }
