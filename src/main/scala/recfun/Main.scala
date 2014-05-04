@@ -1,7 +1,5 @@
 package recfun
 
-import scala.collection.mutable.ArrayBuffer
-
 object Main {
 
   def main(args: Array[String]) {
@@ -82,89 +80,46 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    val combinations = new ArrayBuffer[Vector[Int]]()
-
-
-    def iter(amountToFill: Int, currentlyUseCombination: Vector[Int], coinsSet: List[Int]): Boolean = {
-      println(s"$amountToFill [$coinsSet]")
-
-      if (amountToFill == 0)
-        false
-
-      else if (coinsSet.isEmpty)
-        false
-
-      else {
-
-        var headSum = coinsSet.head
-
-        while (headSum > 0) {
-
-          headSum = headSum + coinsSet.head
-
-          if (amountToFill - headSum > 0) {
-            iter(amountToFill - headSum , currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
-          }
-          else if (amountToFill - headSum == 0) {
-            iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
-          }
-          else {
-
-          }
-
-        }
-
-
-
-
-
-        val dif = amountToFill - coinsSet.head
-
-        if (dif > 0) {
-          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
-
-          //          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet)
-        }
-
-        else if (dif == 0) {
-          //          println(s"===> ${currentlyUseCombination :+ coinsSet.head}")
-          combinations += currentlyUseCombination :+ coinsSet.head
-
-          println(s"found a good combination ${currentlyUseCombination :+ coinsSet.head} with head coin ${coinsSet.head},\n" +
-            s"now will search to express $amountToFill with smaller set ${coinsSet.tail}")
-
-          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
-
-          true
-        }
-
-        false
-
-        //        //currently added coin too big to fill amount
-        //        else {
-        //          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
-        //        }
-
-      }
-
-
-    }
-
-    iter(money, Vector[Int](), coins)
+    val combinations = calcCombinations(money, coins, Vector[Int](), Vector[Vector[Int]]())
 
     println(combinations)
 
     combinations.length
   }
 
-  def countSingleCoinInAmount(targetAmount: Int, currentAmount: Int, coin: Int): Int = {
-    if (currentAmount == targetAmount)
-      targetAmount / coin
-    else if (currentAmount < targetAmount)
-      countSingleCoinInAmount(targetAmount, currentAmount + coin, coin)
-    else
-      0
+  def calcCombinations(amountToFill: Int, coinsSet: List[Int],
+                       currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
+
+    if (amountToFill == 0 || coinsSet.isEmpty)
+      allCombinations
+
+
+    else if (amountToFill - coinsSet.head > 0) {
+      //initial: (14, [4,2])
+
+      //      (14 - (4),          [2],  [4]) =        (10,  [2],  [4])
+      calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
+
+      //      (14 - (4 + 4),      [2],  [4, 4]) =     (6,   [2],  [4, 4])
+      //      (14 - (4 + 4 + 4),  [2],  [4, 4, 4]) =  (2,   [2],  [4, 4, 4])
+
+    }
+
+    else if (amountToFill - coinsSet.head < 0) {
+      calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
+    }
+
+    else if (amountToFill - coinsSet.head == 0) {
+      //      calcCombinations()
+      allCombinations :+ (currCombination :+ coinsSet.head)
+    }
+
+
+    allCombinations
   }
 
 
 }
+
+//trying reuse single coin
+//if(processedCombination.last == coinsSet.head)
