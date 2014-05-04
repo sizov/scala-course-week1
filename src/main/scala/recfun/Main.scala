@@ -94,6 +94,21 @@ object Main {
       allCombinations
 
 
+    else if (amountToFill - coinsSet.head == 0) {
+      // adding current combination with head to success
+      val c = allCombinations :+ (currCombination :+ coinsSet.head)
+
+      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
+      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
+    }
+
+
+    else if (amountToFill - coinsSet.head < 0) {
+      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
+      calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
+    }
+
+
     else if (amountToFill - coinsSet.head > 0) {
       //initial: (14, [6, 4, 2])
 
@@ -106,18 +121,11 @@ object Main {
       // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
       val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head, c1)
 
-      // launching calculation to fill in (amount) with other coins (because others can fill in this too)
+      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
       calcCombinations(amountToFill, coinsSet.tail, currCombination, c2)
     }
 
-    else if (amountToFill - coinsSet.head < 0) {
-      calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
-    }
 
-    else if (amountToFill - coinsSet.head == 0) {
-      //      calcCombinations()
-      allCombinations :+ (currCombination :+ coinsSet.head)
-    }
 
 
     allCombinations
