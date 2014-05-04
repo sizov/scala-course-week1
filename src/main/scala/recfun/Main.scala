@@ -90,6 +90,8 @@ object Main {
   def calcCombinations(amountToFill: Int, coinsSet: List[Int],
                        currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
 
+    println(s"$amountToFill [$coinsSet]")
+
     if (amountToFill == 0 || coinsSet.isEmpty)
       allCombinations
 
@@ -97,6 +99,8 @@ object Main {
     else if (amountToFill - coinsSet.head == 0) {
       // adding current combination with head to success
       val c = allCombinations :+ (currCombination :+ coinsSet.head)
+
+      println(s"FOUND combination ${currCombination :+ coinsSet.head}")
 
       // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
       calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
@@ -110,14 +114,9 @@ object Main {
 
 
     else if (amountToFill - coinsSet.head > 0) {
-      //initial: (14, [6, 4, 2])
-
-      //      (14 - (6),          [4, 2],  [6]) =        (8,  [2],  [4])
       // launching calculation to fill in (amount - head) with other coins
       val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
 
-      //      (14 - (6 + 6),      [4, 2],  [6, 6]) =     (6,   [2],  [4, 4])
-      //      (14 - (4 + 4 + 4),  [4, 2],  [4, 4, 4]) =  (2,   [2],  [4, 4, 4])
       // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
       val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head, c1)
 
@@ -130,9 +129,4 @@ object Main {
 
     allCombinations
   }
-
-
 }
-
-//trying reuse single coin
-//if(processedCombination.last == coinsSet.head)
