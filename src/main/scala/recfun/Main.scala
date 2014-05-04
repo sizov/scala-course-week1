@@ -13,17 +13,14 @@ object Main {
 
 
   /**
+   * ======================================================
    * Exercise 1
+   * ======================================================
    */
   def pascal(c: Int, r: Int): Int = {
     getPascalRow(r)(c)
   }
 
-  /**
-   *
-   * @param index
-   * @return
-   */
   def getPascalRow(index: Int): Array[Int] = {
     if (index == 0)
       Array(1)
@@ -38,22 +35,10 @@ object Main {
     }
   }
 
-  /**
-   *
-   * @param index
-   * @param previousRow
-   * @return
-   */
   def calculateRowElement(index: Int, previousRow: Array[Int]): Int = {
     retrieveRowElementByIndex(previousRow, index - 1) + retrieveRowElementByIndex(previousRow, index)
   }
 
-  /**
-   *
-   * @param buffer
-   * @param i
-   * @return
-   */
   def retrieveRowElementByIndex(buffer: Array[Int], i: Int) = {
     if (i < 0 || i >= buffer.length)
       0
@@ -63,7 +48,9 @@ object Main {
 
 
   /**
+   * ======================================================
    * Exercise 2
+   * ======================================================
    */
   def balance(chars: List[Char]): Boolean = {
     val openSymbol = '('
@@ -93,27 +80,90 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    amountUsingSingleCoins(money, coins)
+
+    fillAmountIter(money, coins)
+
   }
 
-  def amountUsingSingleCoins(money: Int, coins: List[Int]): Int = {
-    if (coins.isEmpty)
+
+  //amount = 2, coinsSet = [1,2]
+  def fillAmountIter(amount: Int, coinsSet: List[Int]): Int = {
+
+    println(s"filling $amount with $coinsSet")
+
+    if (coinsSet.isEmpty)
       0
-    else if (canBeDoneWithSoloCoin(money, coins.head))
-      1 + amountUsingSingleCoins(money, coins.tail)
-    else
-      amountUsingSingleCoins(money, coins.tail)
+
+    else if (amount == 0)
+      0
+
+    else if (amount < coinsSet.head) {
+//      println(s"Can\'t fill $amount with head ${coinsSet.head}. Will try with ${coinsSet.tail}")
+      fillAmountIter(amount, coinsSet.tail)
+    }
+
+    else if (amount > coinsSet.head) {
+//      println(s"Can fill $amount with head (${coinsSet.head}), more remains. Will try filling smaller amount (${amount - coinsSet.head})")
+      //      1 + fillAmountIter(amount - coinsSet.head, coinsSet)
+      fillAmountIter(amount - coinsSet.head, coinsSet)
+    }
+
+    else {
+//      println(s"Can EXACTLY fill $amount with head (${coinsSet.head}), NO more amount to fill remains")
+
+      //FIXME: need to reset amount now
+      1 + fillAmountIter(amount, coinsSet.tail)
+    }
+
+
+    //      lessAmountToFillSameCoins + sameAmountToFillLessCoins
+
+
+    //    def func() {
+    //      if (x)
+    //        0
+    //      else if (y)
+    //        func(A) + func(B)
+    //      else
+    //        func(c)
+    //    }
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //    if (coinsSet.isEmpty)
+    //      0
+    //    else if (canBeDoneWithSoloCoin(amountToFill, coinsSet.head))
+    //      1 + amountUsingSingleCoins(amountToFill, coinsSet.tail)
+    //    else
+    //    val
+    //    amountUsingCoinsIter (amountToFill -, coinsSet.tail)
   }
 
-  def canBeDoneWithSoloCoin(money: Int, coin: Int): Boolean = {
-    closestToTarget(money, 0, coin) == money
-  }
 
-  def closestToTarget(target: Int, current: Int, increm: Int): Int = {
-    if (current >= target)
-      current
-    else
-      closestToTarget(target, current + increm, increm)
-  }
+  //  def amountUsingSingleCoins(money: Int, coins: List[Int]): Int = {
+  //    if (coins.isEmpty)
+  //      0
+  //    else if (canBeDoneWithSoloCoin(money, coins.head))
+  //      1 + amountUsingSingleCoins(money, coins.tail)
+  //    else
+  //      amountUsingSingleCoins(money, coins.tail)
+  //  }
+  //
+  //  def canBeDoneWithSoloCoin(money: Int, coin: Int): Boolean = {
+  //    closestToTarget(money, 0, coin) == money
+  //  }
+  //
+  //  def closestToTarget(target: Int, current: Int, increm: Int): Int = {
+  //    if (current >= target)
+  //      current
+  //    else
+  //      closestToTarget(target, current + increm, increm)
+  //  }
 
 }
