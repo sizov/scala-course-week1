@@ -85,27 +85,49 @@ object Main {
     val combinations = new ArrayBuffer[Vector[Int]]()
 
 
-    def iter(amountToFill: Int, currentlyUseCombination: Vector[Int], coinsSet: List[Int]) : Boolean = {
+    def iter(amountToFill: Int, currentlyUseCombination: Vector[Int], coinsSet: List[Int]): Boolean = {
       println(s"$amountToFill [$coinsSet]")
 
       if (amountToFill == 0)
         false
 
-      else if(coinsSet.isEmpty)
+      else if (coinsSet.isEmpty)
         false
 
       else {
+
+        var headSum = coinsSet.head
+
+        while (headSum > 0) {
+
+          headSum = headSum + coinsSet.head
+
+          if (amountToFill - headSum > 0) {
+            iter(amountToFill - headSum , currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
+          }
+          else if (amountToFill - headSum == 0) {
+            iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
+          }
+          else {
+
+          }
+
+        }
+
+
+
+
 
         val dif = amountToFill - coinsSet.head
 
         if (dif > 0) {
           iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet.tail)
 
-          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet)
+          //          iter(dif, currentlyUseCombination :+ coinsSet.head, coinsSet)
         }
 
         else if (dif == 0) {
-//          println(s"===> ${currentlyUseCombination :+ coinsSet.head}")
+          //          println(s"===> ${currentlyUseCombination :+ coinsSet.head}")
           combinations += currentlyUseCombination :+ coinsSet.head
 
           println(s"found a good combination ${currentlyUseCombination :+ coinsSet.head} with head coin ${coinsSet.head},\n" +
@@ -116,10 +138,12 @@ object Main {
           true
         }
 
-        //currently added coin too big to fill amount
-        else {
-          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
-        }
+        false
+
+        //        //currently added coin too big to fill amount
+        //        else {
+        //          iter(amountToFill, currentlyUseCombination, coinsSet.tail)
+        //        }
 
       }
 
