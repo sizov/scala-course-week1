@@ -46,9 +46,9 @@ class BalanceSuite extends FunSuite {
     assert(balance("".toList) == true)
   }
 
-//  test("balance: corner case 2") {
-//    assert(balance(null) == true)
-//  }
+  //  test("balance: corner case 2") {
+  //    assert(balance(null) == true)
+  //  }
 
   test("balance: corner case 3") {
     assert(balance("()".toList) == true)

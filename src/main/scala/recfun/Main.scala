@@ -1,7 +1,5 @@
 package recfun
 
-import scala.collection.mutable.ArrayBuffer
-
 object Main {
 
   def main(args: Array[String]) {
@@ -82,68 +80,22 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    val c = calcCombinations(money, coins, Vector[Int](), Vector[Vector[Int]]())
-    //    val c = calcCombinationsTest(10, Vector[Vector[Int]]())
-
-    println(c)
-
-    c.length
+    calcCombinations(money, coins, Vector[Int](), Vector[Vector[Int]]()).length
   }
 
-  //  def calcCombinationsTest(amountToFill: Int, allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
-  //
-  //    if (amountToFill == 0)
-  //      allCombinations
-  //
-  //
-  //    else if (amountToFill / 5 == 0) {
-  //      calcCombinationsTest(currCombination, coinsSet, allCombinations, amountToFill)
-  //    }
-  //
-  //
-  //    else if (amountToFill - coinsSet.head < 0) {
-  //      overFilled(amountToFill, coinsSet, currCombination, allCombinations)
-  //    }
-  //
-  //
-  //    else if (amountToFill - coinsSet.head > 0) {
-  //      notYetFilled(amountToFill, coinsSet, currCombination, allCombinations)
-  //    }
-  //
-  //    allCombinations
-  //  }
 
   def calcCombinations(amountToFill: Int, coinsSet: List[Int],
                        currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
 
-    println(s"$amountToFill, [$coinsSet], currCombination: $currCombination, allCombinations: $allCombinations")
-
-    if (amountToFill == 0 || coinsSet.isEmpty) {
-      println(s"<== $allCombinations")
-      println()
+    if (amountToFill == 0 || coinsSet.isEmpty)
       allCombinations
-    }
-
-
-    else if (amountToFill - coinsSet.head == 0) {
+    else if (amountToFill - coinsSet.head == 0)
       filledSuccess(amountToFill, coinsSet, currCombination, allCombinations)
-    }
-
-
-    else if (amountToFill - coinsSet.head < 0) {
+    else if (amountToFill - coinsSet.head < 0)
       overFilled(amountToFill, coinsSet, currCombination, allCombinations)
-    }
-
-
-    else {
+    else
       notYetFilled(amountToFill, coinsSet, currCombination, allCombinations)
-    }
-
-    //    allCombinations
   }
-
-
-
 
 
   def overFilled(amountToFill: Int, coinsSet: List[Int],
@@ -153,21 +105,17 @@ object Main {
   }
 
 
-
-
   def notYetFilled(amountToFill: Int, coinsSet: List[Int],
                    currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
     // launching calculation to fill in (amount - head) with other coins
-    calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
+    val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
 
     // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
-    calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head, allCombinations)
+    val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head, c1)
 
     // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-    calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
+    calcCombinations(amountToFill, coinsSet.tail, currCombination, c2)
   }
-
-
 
 
   def filledSuccess(amountToFill: Int, coinsSet: List[Int],
@@ -179,9 +127,6 @@ object Main {
       calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
     }
     else {
-      println(s"  new element to result ${allCombinations :+ foundCombination}")
-      println()
-
       // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
       calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations :+ foundCombination)
     }
