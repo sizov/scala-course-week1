@@ -90,7 +90,7 @@ object Main {
     def calcCombinations(amountToFill: Int, coinsSet: List[Int], currCombination: Vector[Int]
                          /*, allCombinations: Vector[Vector[Int]]*/): ArrayBuffer[Vector[Int]] = {
 
-      println(s"  amount = $amountToFill,   coinsSet = [$coinsSet],   currCombination = $currCombination")
+//      println(s"  amount = $amountToFill,   coinsSet = [$coinsSet],   currCombination = $currCombination")
 
       if (amountToFill == 0 || coinsSet.isEmpty) {
         //      println("!!! reached dead end")
@@ -102,18 +102,18 @@ object Main {
         val foundCombination = currCombination :+ coinsSet.head
 
         if (hasSimilarElement(allCombinations, foundCombination)) {
-          println()
-          println(s"===> found combination $foundCombination, but already exists")
-          println()
+//          println()
+//          println(s"===> found combination $foundCombination, but already exists")
+//          println()
 
           allCombinations
         }
         else {
           // adding current combination with head to success
 
-          println()
-          println(s"===> FOUND combination $foundCombination, adding")
-          println()
+//          println()
+//          println(s"===> FOUND combination $foundCombination, adding")
+//          println()
 
           allCombinations += foundCombination
         }
@@ -152,7 +152,7 @@ object Main {
 
     val combinations = calcCombinations(money, coins, Vector[Int]() /*, Vector[Vector[Int]]()*/)
 
-    println(combinations)
+//    println(combinations)
 
     combinations.length
   }
