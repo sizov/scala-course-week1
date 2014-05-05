@@ -41,4 +41,52 @@ class BalanceSuite extends FunSuite {
   test("balance: counting is not enough 5") {
     assert(!balance("(5 - (1+2) * 2 - 2)) ".toList))
   }
+
+  test("balance: corner case 1") {
+    assert(balance("".toList) == true)
+  }
+
+//  test("balance: corner case 2") {
+//    assert(balance(null) == true)
+//  }
+
+  test("balance: corner case 3") {
+    assert(balance("()".toList) == true)
+  }
+
+  test("balance: corner case 4") {
+    assert(balance("( )".toList) == true)
+  }
+
+  test("balance: corner case 5") {
+    assert(balance("( )  ".toList) == true)
+  }
+
+  test("balance: corner case 6") {
+    assert(balance(")".toList) == false)
+  }
+
+  test("balance: corner case 7") {
+    assert(balance("))".toList) == false)
+  }
+
+  test("balance: corner case 8") {
+    assert(balance(")))".toList) == false)
+  }
+
+  test("balance: corner case 9") {
+    assert(balance("(".toList) == false)
+  }
+
+  test("balance: corner case 10") {
+    assert(balance("((".toList) == false)
+  }
+
+  test("balance: corner case 11") {
+    assert(balance("(()".toList) == false)
+  }
+
+  test("balance: corner case 12") {
+    assert(balance("())".toList) == false)
+  }
 }

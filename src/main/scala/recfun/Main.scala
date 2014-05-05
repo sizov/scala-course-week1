@@ -60,7 +60,7 @@ object Main {
 
     def balanceIter(chars: List[Char], openedCount: Int, closedCount: Int): Boolean = {
       if (chars.isEmpty)
-        true
+        closedCount == openedCount
       else if (chars.head == openSymbol)
         balanceIter(chars.tail, openedCount + 1, closedCount)
       else if (chars.head == closeSymbol) {
