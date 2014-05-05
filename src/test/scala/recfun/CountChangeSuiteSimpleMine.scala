@@ -29,4 +29,12 @@ class CountChangeSuiteSimpleMine extends FunSuite {
   test("recur 5") {
     assert(countChange(14, List(6, 4, 2)) === 8)
   }
+
+  test("recur 5 - unsorted 1") {
+    assert(countChange(14, List(2, 6, 4)) === 8)
+  }
+
+  test("recur 5 - unsorted 2") {
+    assert(countChange(14, List(4, 2, 6)) === 8)
+  }
 }
