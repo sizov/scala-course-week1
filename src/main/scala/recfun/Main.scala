@@ -84,7 +84,7 @@ object Main {
   def countChange(money: Int, coins: List[Int]): Int = {
 
     //FIXME: remove using local variables
-//    val allCombinations = Vector[Vector[Int]]()
+    //    val allCombinations = Vector[Vector[Int]]()
     val allCombinations = ArrayBuffer[Vector[Int]]()
 
     def calcCombinations(amountToFill: Int, coinsSet: List[Int], currCombination: Vector[Int]
@@ -119,7 +119,7 @@ object Main {
         }
 
         // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-        //      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
+        calcCombinations(amountToFill, coinsSet.tail, currCombination /*, c*/)
       }
 
 
@@ -127,7 +127,7 @@ object Main {
         //      println(s"(amountToFill - coinsSet.head < 0)")
         //      println(s"(amountToFill - coinsSet.head < 0): launching calculation to fill in ($amountToFill) with other coins (because others can fill in same amount too")
         // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-        calcCombinations(amountToFill, coinsSet.tail, currCombination/*, allCombinations*/)
+        calcCombinations(amountToFill, coinsSet.tail, currCombination /*, allCombinations*/)
       }
 
 
@@ -135,13 +135,13 @@ object Main {
         //      println(s"(amountToFill - coinsSet.head > 0)")
 
         // launching calculation to fill in (amount - head) with other coins
-        val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head/*, allCombinations*/)
+        val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head /*, allCombinations*/)
 
         // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
-        val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head/*, c1*/)
+        val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head /*, c1*/)
 
         // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-        calcCombinations(amountToFill, coinsSet.tail, currCombination/*, c2*/)
+        calcCombinations(amountToFill, coinsSet.tail, currCombination /*, c2*/)
       }
 
 
@@ -150,14 +150,12 @@ object Main {
       allCombinations
     }
 
-    val combinations = calcCombinations(money, coins, Vector[Int]()/*, Vector[Vector[Int]]()*/)
+    val combinations = calcCombinations(money, coins, Vector[Int]() /*, Vector[Vector[Int]]()*/)
 
     println(combinations)
 
     combinations.length
   }
-
-
 
 
   def hasSimilarElement(vecOfVec: ArrayBuffer[Vector[Int]], targetVec: Vector[Int]) = {
