@@ -11,61 +11,63 @@ class CountChangeSuite extends FunSuite {
   import Main.countChange
   import Main.areSimilar
   import Main.hasSimilarElement
+  import Main.dynamicAdd
 
 
-
-  test("lists same 1") {
-    assert(areSimilar(Vector(1, 2), Vector(1,2)) === true)
-  }
-
-  test("lists same 2") {
-    assert(areSimilar(Vector(2, 7), Vector(2, 8)) === false)
-  }
-
-  test("lists same 3") {
-    assert(areSimilar(Vector(), Vector()) === true)
-  }
-
-  test("lists same 4") {
-    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9)), Vector(7,9)) === true)
-  }
-
-  test("lists same 5") {
-    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9)), Vector(3,1)) === false)
-  }
-
-  test("lists same 6") {
-    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9,6)), Vector(7,9,6)) === true)
-  }
-
-  test("lists same 7") {
-    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9,6)), Vector(7,9,6)) === true)
-  }
-
-//
-//
-//
-// test("recur 1") {
-//    assert(countChange(1, List(1, 2)) === 1)
-//  }
-
-//  test("recur 2") {
-//    assert(countChange(10, List(2, 5, 10)) === 3)
-//  }
-
-//  test("recur 3") {
-//    assert(countChange(6, List(3, 2)) === 2)
-//  }
-
-//    test("recur 4") {
-//      assert(countChange(10, List(6, 4, 2)) === 5)
-//    }
-
-    test("recur 5") {
-      assert(countChange(14, List(6, 4, 2)) === 8)
-    }
+//  val v = dynamicAdd(Vector[Int]())
+//  println(v)
 
 
+  //  test("lists same 1") {
+  //    assert(areSimilar(Vector(1, 2), Vector(1,2)) === true)
+  //  }
+  //
+  //  test("lists same 2") {
+  //    assert(areSimilar(Vector(2, 7), Vector(2, 8)) === false)
+  //  }
+  //
+  //  test("lists same 3") {
+  //    assert(areSimilar(Vector(), Vector()) === true)
+  //  }
+  //
+  //  test("lists same 4") {
+  //    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9)), Vector(7,9)) === true)
+  //  }
+  //
+  //  test("lists same 5") {
+  //    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9)), Vector(3,1)) === false)
+  //  }
+  //
+  //  test("lists same 6") {
+  //    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9,6)), Vector(7,9,6)) === true)
+  //  }
+  //
+  //  test("lists same 7") {
+  //    assert(hasSimilarElement(Vector(Vector(1,2),Vector(7,9,6)), Vector(7,9,6)) === true)
+  //  }
+
+  //
+  //
+  //
+  // test("recur 1") {
+  //    assert(countChange(1, List(1, 2)) === 1)
+  //  }
+
+  //  test("recur 2") {
+  //    assert(countChange(10, List(2, 5, 10)) === 3)
+  //  }
+
+  //  test("recur 3") {
+  //    assert(countChange(6, List(3, 2)) === 2)
+  //  }
+
+  //    test("recur 4") {
+  //      assert(countChange(10, List(6, 4, 2)) === 5)
+  //    }
+
+      test("recur 5") {
+        assert(countChange(14, List(6, 4, 2)) === 8)
+      }
 
 
   //  test("single 2") {

@@ -1,5 +1,7 @@
 package recfun
 
+import scala.collection.mutable.ArrayBuffer
+
 object Main {
 
   def main(args: Array[String]) {
@@ -80,78 +82,85 @@ object Main {
    * ======================================================
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    val combinations = calcCombinations(money, coins, Vector[Int](), Vector[Vector[Int]]())
+
+    //FIXME: remove using local variables
+//    val allCombinations = Vector[Vector[Int]]()
+    val allCombinations = ArrayBuffer[Vector[Int]]()
+
+    def calcCombinations(amountToFill: Int, coinsSet: List[Int], currCombination: Vector[Int]
+                         /*, allCombinations: Vector[Vector[Int]]*/): ArrayBuffer[Vector[Int]] = {
+
+      println(s"  amount = $amountToFill,   coinsSet = [$coinsSet],   currCombination = $currCombination")
+
+      if (amountToFill == 0 || coinsSet.isEmpty) {
+        //      println("!!! reached dead end")
+        allCombinations
+      }
+
+
+      else if (amountToFill - coinsSet.head == 0) {
+        val foundCombination = currCombination :+ coinsSet.head
+
+        if (hasSimilarElement(allCombinations, foundCombination)) {
+          println()
+          println(s"===> found combination $foundCombination, but already exists")
+          println()
+
+          allCombinations
+        }
+        else {
+          // adding current combination with head to success
+
+          println()
+          println(s"===> FOUND combination $foundCombination, adding")
+          println()
+
+          allCombinations += foundCombination
+        }
+
+        // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
+        //      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
+      }
+
+
+      else if (amountToFill - coinsSet.head < 0) {
+        //      println(s"(amountToFill - coinsSet.head < 0)")
+        //      println(s"(amountToFill - coinsSet.head < 0): launching calculation to fill in ($amountToFill) with other coins (because others can fill in same amount too")
+        // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
+        calcCombinations(amountToFill, coinsSet.tail, currCombination/*, allCombinations*/)
+      }
+
+
+      else if (amountToFill - coinsSet.head > 0) {
+        //      println(s"(amountToFill - coinsSet.head > 0)")
+
+        // launching calculation to fill in (amount - head) with other coins
+        val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head/*, allCombinations*/)
+
+        // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
+        val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head/*, c1*/)
+
+        // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
+        calcCombinations(amountToFill, coinsSet.tail, currCombination/*, c2*/)
+      }
+
+
+
+
+      allCombinations
+    }
+
+    val combinations = calcCombinations(money, coins, Vector[Int]()/*, Vector[Vector[Int]]()*/)
 
     println(combinations)
 
     combinations.length
   }
 
-  def calcCombinations(amountToFill: Int, coinsSet: List[Int],
-                       currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
-
-    println(s"  amount = $amountToFill,   coinsSet = [$coinsSet],   currCombination = ${currCombination}")
-
-    if (amountToFill == 0 || coinsSet.isEmpty) {
-      //      println("!!! reached dead end")
-      allCombinations
-    }
-
-
-    else if (amountToFill - coinsSet.head == 0) {
-      val foundCombination = currCombination :+ coinsSet.head
-
-      if (hasSimilarElement(allCombinations, foundCombination)) {
-        println()
-        println(s"===> found combination $foundCombination, but already exists")
-        println()
-
-        allCombinations
-      }
-      else {
-        // adding current combination with head to success
-
-        println()
-        println(s"===> FOUND combination $foundCombination, adding")
-        println()
-
-        allCombinations :+ foundCombination
-      }
-
-      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-//      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
-    }
-
-
-    else if (amountToFill - coinsSet.head < 0) {
-      //      println(s"(amountToFill - coinsSet.head < 0)")
-      //      println(s"(amountToFill - coinsSet.head < 0): launching calculation to fill in ($amountToFill) with other coins (because others can fill in same amount too")
-      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-      calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
-    }
-
-
-    else if (amountToFill - coinsSet.head > 0) {
-      //      println(s"(amountToFill - coinsSet.head > 0)")
-
-      // launching calculation to fill in (amount - head) with other coins
-      val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
-
-      // launching calculation to fill in (amount - head) with same coins (because head can be fitted once more)
-      val c2 = calcCombinations(amountToFill - coinsSet.head, coinsSet, currCombination :+ coinsSet.head, c1)
-
-      // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-      calcCombinations(amountToFill, coinsSet.tail, currCombination, c2)
-    }
 
 
 
-
-    allCombinations
-  }
-
-
-  def hasSimilarElement(vecOfVec: Vector[Vector[Int]], targetVec: Vector[Int]) = {
+  def hasSimilarElement(vecOfVec: ArrayBuffer[Vector[Int]], targetVec: Vector[Int]) = {
     vecOfVec.find(areSimilar(_, targetVec)) != None
   }
 
@@ -166,4 +175,16 @@ object Main {
     else
       false
   }
+
+
+  def dynamicAdd(accumulator: Vector[Int]): Vector[Int] = {
+    if (accumulator.length < 3)
+      dynamicAdd(accumulator :+ 666)
+    else if (accumulator.length < 10)
+      dynamicAdd(accumulator :+ 222)
+    else
+      accumulator
+  }
+
+
 }
