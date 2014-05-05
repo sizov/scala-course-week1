@@ -90,30 +90,50 @@ object Main {
   def calcCombinations(amountToFill: Int, coinsSet: List[Int],
                        currCombination: Vector[Int], allCombinations: Vector[Vector[Int]]): Vector[Vector[Int]] = {
 
-    println(s"$amountToFill [$coinsSet]")
+    println(s"  amount = $amountToFill,   coinsSet = [$coinsSet],   currCombination = ${currCombination}")
 
-    if (amountToFill == 0 || coinsSet.isEmpty)
+    if (amountToFill == 0 || coinsSet.isEmpty) {
+      //      println("!!! reached dead end")
       allCombinations
+    }
 
 
     else if (amountToFill - coinsSet.head == 0) {
-      // adding current combination with head to success
-      val c = allCombinations :+ (currCombination :+ coinsSet.head)
+      val foundCombination = currCombination :+ coinsSet.head
 
-      println(s"FOUND combination ${currCombination :+ coinsSet.head}")
+      if (hasSimilarElement(allCombinations, foundCombination)) {
+        println()
+        println(s"===> found combination $foundCombination, but already exists")
+        println()
+
+        allCombinations
+      }
+      else {
+        // adding current combination with head to success
+
+        println()
+        println(s"===> FOUND combination $foundCombination, adding")
+        println()
+
+        allCombinations :+ foundCombination
+      }
 
       // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
-      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
+//      calcCombinations(amountToFill, coinsSet.tail, currCombination, c)
     }
 
 
     else if (amountToFill - coinsSet.head < 0) {
+      //      println(s"(amountToFill - coinsSet.head < 0)")
+      //      println(s"(amountToFill - coinsSet.head < 0): launching calculation to fill in ($amountToFill) with other coins (because others can fill in same amount too")
       // launching calculation to fill in (amount) with other coins (because others can fill in same amount too)
       calcCombinations(amountToFill, coinsSet.tail, currCombination, allCombinations)
     }
 
 
     else if (amountToFill - coinsSet.head > 0) {
+      //      println(s"(amountToFill - coinsSet.head > 0)")
+
       // launching calculation to fill in (amount - head) with other coins
       val c1 = calcCombinations(amountToFill - coinsSet.head, coinsSet.tail, currCombination :+ coinsSet.head, allCombinations)
 
@@ -128,5 +148,22 @@ object Main {
 
 
     allCombinations
+  }
+
+
+  def hasSimilarElement(vecOfVec: Vector[Vector[Int]], targetVec: Vector[Int]) = {
+    vecOfVec.find(areSimilar(_, targetVec)) != None
+  }
+
+  def areSimilar(a: Vector[Int], b: Vector[Int]): Boolean = {
+
+    if (a.length != b.length)
+      false
+    else if (a.length == 0)
+      true
+    else if (a.head == b.head)
+      areSimilar(a.tail, b.tail)
+    else
+      false
   }
 }
