@@ -25,18 +25,18 @@ class CountChangeSuiteSameElements extends FunSuite {
   }
 
   test("lists same 4") {
-    assert(hasSimilarElement(ArrayBuffer(Vector(1, 2), Vector(7, 9)), Vector(7, 9)) === true)
+    assert(hasSimilarElement(Vector(Vector(1, 2), Vector(7, 9)), Vector(7, 9)) === true)
   }
 
   test("lists same 5") {
-    assert(hasSimilarElement(ArrayBuffer(Vector(1, 2), Vector(7, 9)), Vector(3, 1)) === false)
+    assert(hasSimilarElement(Vector(Vector(1, 2), Vector(7, 9)), Vector(3, 1)) === false)
   }
 
   test("lists same 6") {
-    assert(hasSimilarElement(ArrayBuffer(Vector(1, 2), Vector(7, 9, 6)), Vector(7, 9, 6)) === true)
+    assert(hasSimilarElement(Vector(Vector(1, 2), Vector(7, 9, 6)), Vector(7, 9, 6)) === true)
   }
 
   test("lists same 7") {
-    assert(hasSimilarElement(ArrayBuffer(Vector(1, 2), Vector(7, 9, 6)), Vector(7, 9, 6)) === true)
+    assert(hasSimilarElement(Vector(Vector(1, 2), Vector(7, 9, 6)), Vector(7, 9, 6)) === true)
   }
 }
